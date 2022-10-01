@@ -32,7 +32,7 @@ fig, axes = plt.subplot_mosaic("AAB;CDD", figsize=(20, 7))
 ax_wave, ax_specto, ax_thayer, ax_emotion = axes.values()
 
 """***   WAVEFORM   ***"""
-ax_wave.set_title('AUDIO WAVEFORM')
+ax_wave.set_title('Audioform')
 ax_wave.set_xlabel('Samples')
 ax_wave.set_ylabel('Volume')
 ax_wave.set_ylim(0 - GRAPH_SHOULDERS, 255 + GRAPH_SHOULDERS)
@@ -44,7 +44,7 @@ wave_x = np.arange(0, 2 * CHUNK, 2)
 wave_line, = ax_wave.plot(wave_x, np.random.rand(CHUNK), '-', lw=1)
 
 """***   SPECTROGRAM   ***"""
-ax_specto.set_title('SPECTROGRAM')
+ax_specto.set_title('Spectrogram')
 ax_specto.set_xlabel('Time')
 ax_specto.set_ylabel('Hz')
 # ax_specto.set_ylim(0 - GRAPH_SHOULDERS, 255 + GRAPH_SHOULDERS)
