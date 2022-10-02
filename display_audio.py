@@ -1,4 +1,5 @@
 from aimpathy_constants import *
+from models.thayer_detector import ThayerRandom
 from audio_utils import smooth
 import pyaudio
 import struct
@@ -62,12 +63,18 @@ spectro_heatmap = ax_spectro.pcolormesh(spectro_x, spectro_y, spectro_z, cmap='m
 # fig.colorbar(spectro_heatmap, ax=ax_spectro)
 
 """***   THAYER MODEL   ***"""
-ax_thayer.set_title('Valance-Arousal graph (Thayer model)')
+emotion_detector = ThayerRandom()
+ax_thayer.set_title('Thayer model')
 ax_thayer.set_xlabel('Valance')
 ax_thayer.set_ylabel('Arousal')
-# ax_spectro.set_ylim(0 - GRAPH_SHOULDERS, 255 + GRAPH_SHOULDERS)
-# ax_spectro.set_xlim(0, 2 * CHUNK)
-# plt.setp(ax_spectro, xticks=[0, CHUNK, 2 * CHUNK], yticks=[0, 128, 255])
+thayer_values = [(0.0, 0.0)] * THAYER_SCATTER_BUFFER_SIZE
+
+thayer_scatter = ax_thayer.scatter([x for x, y in thayer_values], [y for x, y in thayer_values], c=thayer_scatter_colors)
+# ax_thayer.grid(True, which='both')
+ax_thayer.axhline(y=0, color='k')
+ax_thayer.axvline(x=0, color='k')
+ax_thayer.set_xlim(-1, 1)
+ax_thayer.set_ylim(-1, 1)
 
 """***   EMOTIONS   ***"""
 ax_emotion.set_title('Perceived emotion graph')
@@ -89,13 +96,16 @@ while True:
     wave_data_np = smooth(wave_data_np, SMOOTH_RATE)
     wave_line.set_ydata(wave_data_np)
 
-    count = len(data) / 2
-    format = '%dh' % (count)
-    snd_block = np.array(struct.unpack(format, data))
+    snd_block = np.array(struct.unpack('%dh' % (len(data) / 2), data))
     f, t, Sxx = signal.spectrogram(snd_block, RATE, scaling="spectrum", nperseg=FFT_POINTS)
     spectro_z = np.roll(spectro_z, 2, axis=1)
     spectro_z[:, 0:2] = Sxx
     spectro_heatmap.set_array(spectro_z)
+
+    new_thayer_x, new_thayer_y = emotion_detector.calculate()
+    thayer_values.pop()
+    thayer_values.insert(0, (new_thayer_x, new_thayer_y))
+    thayer_scatter.set_offsets(np.c_[[x for x, y in thayer_values], [y for x, y in thayer_values]])
 
     # update figure canvas
     try:
