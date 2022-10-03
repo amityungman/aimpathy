@@ -1,6 +1,7 @@
 from aimpathy_constants import *
 from models.thayer_detector import ThayerRandom
 from audio_utils import smooth
+from typing import List, Dict
 import pyaudio
 import struct
 import numpy as np
@@ -8,6 +9,7 @@ import matplotlib.pyplot as plt
 import time
 import math
 from scipy import signal
+from models.thayer_to_emotion import thayer_coordinates_to_emotion, AimpathyEmotion
 
 
 """********************   STARTING AUDIO STREAM   ********************"""
@@ -69,7 +71,7 @@ ax_thayer.set_xlabel('Valance')
 ax_thayer.set_ylabel('Arousal')
 thayer_values = [(0.0, 0.0)] * THAYER_SCATTER_BUFFER_SIZE
 
-thayer_scatter = ax_thayer.scatter([x for x, y in thayer_values], [y for x, y in thayer_values], c=thayer_scatter_colors)
+thayer_scatter = ax_thayer.scatter([x for x, y in thayer_values], [y for x, y in thayer_values], c=thayer_scatter_colors, s=thayer_scatter_sizes)
 # ax_thayer.grid(True, which='both')
 ax_thayer.axhline(y=0, color='k')
 ax_thayer.axvline(x=0, color='k')
@@ -77,12 +79,20 @@ ax_thayer.set_xlim(-1, 1)
 ax_thayer.set_ylim(-1, 1)
 
 """***   EMOTIONS   ***"""
+emotions: Dict[AimpathyEmotion, List[float]] = {emotion: list() for emotion in AimpathyEmotion}
+emotions_graphs = dict()
+emotions_graph_x_lim = 10
 ax_emotion.set_title('Perceived emotion graph')
-ax_emotion.set_xlabel('Time')
-ax_emotion.set_ylabel('Emotion level')
-ax_emotion.set_ylim(0 - GRAPH_SHOULDERS//5, 100 + GRAPH_SHOULDERS//5)
-# ax_spectro.set_xlim(0, 2 * CHUNK)
-# plt.setp(ax_spectro, xticks=[0, CHUNK, 2 * CHUNK], yticks=[0, 128, 255])
+ax_emotion.set_xlabel('Time [sec]')
+ax_emotion.set_ylabel('Emotion level [%]')
+ax_emotion.set_ylim(0, 1)
+ax_emotion.set_xlim(0, emotions_graph_x_lim)
+
+for emotion in emotions.keys():
+    emotion_line, = ax_emotion.plot([0.0], [0.0], '-', lw=3, label=emotion.name())
+    emotions_graphs[emotion] = emotion_line
+
+ax_emotion.legend()
 
 print("Display ready")
 plt.show(block=False)
@@ -102,12 +112,20 @@ while True:
     spectro_z[:, 0:2] = Sxx
     spectro_heatmap.set_array(spectro_z)
 
-    new_thayer_x, new_thayer_y = emotion_detector.calculate()
+    new_thayer_x, new_thayer_y = emotion_detector.calculate(list(Sxx[1:, 0]))
     thayer_values.pop()
     thayer_values.insert(0, (new_thayer_x, new_thayer_y))
     thayer_scatter.set_offsets(np.c_[[x for x, y in thayer_values], [y for x, y in thayer_values]])
 
-    # update figure canvas
+    new_emotion = thayer_coordinates_to_emotion(new_thayer_x, new_thayer_y)
+    for emotion, emotion_value in new_emotion.items():
+        emotions[emotion].append(emotion_value)
+        emotions_graphs[emotion].set_xdata([i*SECS_PER_SPECTROGRAM_SEGMENT for i in range(len(emotions[emotion]))])
+        emotions_graphs[emotion].set_ydata(emotions[emotion])
+    if (len(list(emotions.values())[0]) * SECS_PER_SPECTROGRAM_SEGMENT) >= emotions_graph_x_lim:
+        emotions_graph_x_lim += 10
+        ax_emotion.set_xlim(0, emotions_graph_x_lim)
+
     try:
         fig.canvas.draw()
         fig.canvas.flush_events()

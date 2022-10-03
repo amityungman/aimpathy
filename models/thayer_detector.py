@@ -1,9 +1,9 @@
-from typing import Tuple
+from typing import Tuple, List
 import random
 
 
 class ThayerModel(object):
-    def calculate(self) -> Tuple[float, float]:
+    def calculate(self, spectrogram: List[float]) -> Tuple[float, float]:
         pass
 
 
@@ -12,7 +12,7 @@ class ThayerRandom(ThayerModel):
     _last_value_x = (random.random() * 2 - 1)
     _last_value_y = (random.random() * 2 - 1)
 
-    def calculate(self) -> Tuple[float, float]:
+    def calculate(self, spectrogram: List[float]) -> Tuple[float, float]:
         self._last_value_x = self._last_value_x + self._max_step_size * (random.random() * 2 - 1)
         self._last_value_x = 1 if self._last_value_x > 1 else self._last_value_x
         self._last_value_x = -1 if self._last_value_x < -1 else self._last_value_x

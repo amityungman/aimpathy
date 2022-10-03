@@ -20,3 +20,4 @@ SPECTROGRAM_MAX_FREQUENCY = RATE // 2
 
 THAYER_SCATTER_BUFFER_SIZE = 10
 thayer_scatter_colors = ['#000000'] + ['#' + 3 * hex(100 + 122 // (THAYER_SCATTER_BUFFER_SIZE - i))[2:]for i in range(1, THAYER_SCATTER_BUFFER_SIZE)]
+thayer_scatter_sizes = [50.0] + [50.0/(i + 1) for i in range(1, THAYER_SCATTER_BUFFER_SIZE)]
