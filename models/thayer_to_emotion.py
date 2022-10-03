@@ -6,10 +6,12 @@ class AimpathyEmotion(Enum):
     _title: str
     _thayer_box: Tuple[Tuple[float, float], Tuple[float, float]]  # (x_min, x_max), (y_min, y_max)
     _thayer_peak: Tuple[float, float]  # (x_max, y_max)
+    _color: str
 
     def __init__(self, title: str, thayer_box: Tuple[Tuple[float, float], Tuple[float, float]],
-                 thayer_peak: Tuple[float, float] = None):
+                 color: str = None, thayer_peak: Tuple[float, float] = None):
         self._title = title
+        self._color = color
         self._thayer_box = ((0.0, 0.0), (0.0, 0.0))
         if thayer_box and (-1 <= thayer_box[0][0] <= 1) and (-1 <= thayer_box[0][1] <= 1) and \
                 (-1 <= thayer_box[1][0] <= 1) and (-1 <= thayer_box[1][1] <= 1):
@@ -19,8 +21,11 @@ class AimpathyEmotion(Enum):
                 ValueError(f"The thayer box was empty")
             raise ValueError(f"The thayer box must have 4 float values in the range [-1, 1]. Got: {thayer_box}")
 
-        self._thayer_peak = (thayer_box[0][1] if abs(thayer_box[0][1]) > abs(thayer_box[0][0]) else thayer_box[0][0],
-                             thayer_box[1][1] if abs(thayer_box[1][1]) > abs(thayer_box[1][0]) else thayer_box[1][0])
+        if not thayer_peak:
+            self._thayer_peak = (thayer_box[0][1] if abs(thayer_box[0][1]) > abs(thayer_box[0][0]) else thayer_box[0][0],
+                                 thayer_box[1][1] if abs(thayer_box[1][1]) > abs(thayer_box[1][0]) else thayer_box[1][0])
+        else:
+            self._thayer_peak = thayer_peak
 
     def name(self) -> str:
         return self._title
@@ -43,10 +48,13 @@ class AimpathyEmotion(Enum):
     def in_range(self, x: float, y: float) -> bool:
         return self.x_min() <= x <= self.x_max() and self.y_min() <= y <= self.y_max()
 
-    HAPPY = ("Happy", ((0.0, 1.0), (0.0, 1.0)))
-    ANGRY = ("Angry", ((-1.0, 0.0), (0.0, 1.0)))
-    SAD = ("Sad", ((-1.0, 0.0), (-1.0, 0.0)))
-    RELAXED = ("Relaxed", ((0.0, 1.0), (-1.0, 0.0)))
+    def color(self):
+        return self._color
+
+    HAPPY = ("Happy", ((0.0, 1.0), (0.0, 1.0)), "#ffcc00")
+    ANGRY = ("Angry", ((-1.0, 0.0), (0.0, 1.0)), "#ff3333")
+    SAD = ("Sad", ((-1.0, 0.0), (-1.0, 0.0)), "#0066ff")
+    RELAXED = ("Relaxed", ((0.0, 1.0), (-1.0, 0.0)), "#009933")
 
 
 MAX_DIST = ((2 ** 2) + (2 ** 2)) ** 0.5
