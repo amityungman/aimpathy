@@ -31,6 +31,13 @@ stream = p.open(
 """********************   ADJUST DISPLAY WINDOW   ********************"""
 
 fig, axes = plt.subplot_mosaic("ABC;DDC", figsize=(20, 7))
+#fig.tight_layout(pad=4.0)
+plt.subplots_adjust(left=0.07,
+                    bottom=0.07,
+                    right=0.93,
+                    top=0.93,
+                    wspace=0.15,
+                    hspace=0.1)
 ax_wave, ax_thayer, ax_spectro, ax_emotion = axes.values()
 
 """***   WAVEFORM   ***"""
@@ -39,7 +46,8 @@ ax_wave.set_xlabel('Samples')
 ax_wave.set_ylabel('Volume')
 ax_wave.set_ylim(0 - GRAPH_SHOULDERS, 255 + GRAPH_SHOULDERS)
 ax_wave.set_xlim(0, 2 * CHUNK)
-plt.setp(ax_wave, xticks=[0, CHUNK, 2 * CHUNK], yticks=[0, 128, 255])
+ax_wave.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+ax_wave.tick_params(axis='y', which='both', right=False, left=False, labelleft=False)
 
 wave_x = np.arange(0, 2 * CHUNK, 2)
 wave_line, = ax_wave.plot(wave_x, np.random.rand(CHUNK), '-', lw=1)
@@ -62,7 +70,6 @@ ax_spectro.set_xlim(0, SPECTROGRAM_SECS)
 plt.setp(ax_spectro, yticks=[10 ** i for i in range(0, math.ceil(math.log(RATE, 10)))])
 spectro_heatmap = ax_spectro.pcolormesh(spectro_x, spectro_y, spectro_z, cmap='magma', vmin=spectro_z_min,
                                         vmax=spectro_z_max)
-# fig.colorbar(spectro_heatmap, ax=ax_spectro)
 
 """***   THAYER MODEL   ***"""
 emotion_detector = ThayerRandom()
@@ -72,11 +79,12 @@ ax_thayer.set_ylabel('Arousal')
 thayer_values = [(0.0, 0.0)] * THAYER_SCATTER_BUFFER_SIZE
 
 thayer_scatter = ax_thayer.scatter([x for x, y in thayer_values], [y for x, y in thayer_values], c=thayer_scatter_colors, s=thayer_scatter_sizes)
-# ax_thayer.grid(True, which='both')
 ax_thayer.axhline(y=0, color='k')
 ax_thayer.axvline(x=0, color='k')
 ax_thayer.set_xlim(-1, 1)
 ax_thayer.set_ylim(-1, 1)
+ax_thayer.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+ax_thayer.tick_params(axis='y', which='both', right=False, left=False, labelleft=False)
 
 """***   EMOTIONS   ***"""
 emotions: Dict[AimpathyEmotion, List[float]] = {emotion: list() for emotion in AimpathyEmotion}
