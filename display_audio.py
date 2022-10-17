@@ -95,7 +95,7 @@ ax_emotion.set_ylim(0, 1)
 ax_emotion.set_xlim(0, emotions_graph_x_lim)
 
 for emotion in emotions.keys():
-    emotion_line, = ax_emotion.plot([0.0], [0.0], '-', lw=3, label=emotion.name(), c=emotion.color())
+    emotion_line, = ax_emotion.plot([0.0], [0.0], '-', lw=1, label=emotion.name(), c=emotion.color())
     emotions_graphs[emotion] = emotion_line
 
 ax_emotion.legend()
