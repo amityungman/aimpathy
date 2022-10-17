@@ -1,5 +1,5 @@
 from aimpathy_constants import *
-from models.thayer_detector import ThayerRandom
+from models.thayer_naive_detector import ThayerNaive
 from audio_utils import smooth
 from typing import List, Dict
 import pyaudio
@@ -31,7 +31,6 @@ stream = p.open(
 """********************   ADJUST DISPLAY WINDOW   ********************"""
 
 fig, axes = plt.subplot_mosaic("ABC;DDC", figsize=(20, 7))
-#fig.tight_layout(pad=4.0)
 plt.subplots_adjust(left=0.07,
                     bottom=0.07,
                     right=0.93,
@@ -57,10 +56,9 @@ wave_line, = ax_wave.plot(wave_x, np.random.rand(CHUNK), '-', lw=1)
 ax_spectro.set_title('Spectrogram')
 ax_spectro.set_xlabel('Time [sec]')
 ax_spectro.set_ylabel('Frequency [Hz]')
-spectro_x_size = SPECTROGRAM_SECS * math.ceil(1 / SECS_PER_SPECTROGRAM_SEGMENT)  # num of spectrograms to display
-spectro_y_size = FFT_POINTS_UNSIGNED + 1  # num of frequencies
+spectro_x_size = SPECTRO_X_SIZE  # num of spectrograms to display
 spectro_x = np.array([(FFT_POINTS_UNSIGNED / RATE) + i * SECS_PER_SPECTROGRAM_SEGMENT for i in range(0, spectro_x_size)])
-spectro_y = np.linspace(0, RATE // 2, spectro_y_size)
+spectro_y = np.linspace(0, RATE // 2, FFT_POINTS_UNSIGNED + 1)
 spectro_z = np.zeros((spectro_y.shape[0], spectro_x.shape[0]))
 spectro_z_min, spectro_z_max = SPECTROGRAM_MIN_VALUE, SPECTROGRAM_MAX_VALUE
 
@@ -72,7 +70,7 @@ spectro_heatmap = ax_spectro.pcolormesh(spectro_x, spectro_y, spectro_z, cmap='m
                                         vmax=spectro_z_max)
 
 """***   THAYER MODEL   ***"""
-emotion_detector = ThayerRandom()
+emotion_detector = ThayerNaive()
 ax_thayer.set_title('Thayer model')
 ax_thayer.set_xlabel('Valance')
 ax_thayer.set_ylabel('Arousal')

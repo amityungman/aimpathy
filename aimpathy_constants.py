@@ -1,4 +1,6 @@
 import pyaudio
+import math
+import numpy as np
 
 # constants
 CHUNK = 1024 * 8             # samples per frame
@@ -17,6 +19,7 @@ SPECTROGRAM_MIN_VALUE = 2 ** 11
 SPECTROGRAM_MAX_VALUE = 2 ** 15
 SPECTROGRAM_MIN_FREQUENCY = 100
 SPECTROGRAM_MAX_FREQUENCY = RATE // 2
+SPECTRO_X_SIZE = SPECTROGRAM_SECS * math.ceil(1 / SECS_PER_SPECTROGRAM_SEGMENT)     # num of spectrograms to display
 
 THAYER_SCATTER_BUFFER_SIZE = 10
 thayer_scatter_colors = ['#000000'] + ['#' + 3 * hex(100 + 122 // (THAYER_SCATTER_BUFFER_SIZE - i))[2:]for i in range(1, THAYER_SCATTER_BUFFER_SIZE)]
