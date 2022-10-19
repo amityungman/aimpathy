@@ -72,8 +72,8 @@ spectro_heatmap = ax_spectro.pcolormesh(spectro_x, spectro_y, spectro_z, cmap='m
 """***   THAYER MODEL   ***"""
 emotion_detector = ThayerNaive()
 ax_thayer.set_title('Thayer model')
-ax_thayer.set_xlabel('Valance')
-ax_thayer.set_ylabel('Arousal')
+ax_thayer.set_xlabel('Arousal')
+ax_thayer.set_ylabel('Valance')
 thayer_values = [(0.0, 0.0)] * THAYER_SCATTER_BUFFER_SIZE
 
 thayer_scatter = ax_thayer.scatter([x for x, y in thayer_values], [y for x, y in thayer_values], c=thayer_scatter_colors, s=thayer_scatter_sizes)
