@@ -13,3 +13,5 @@ matplotlib==3.6.0
 ipywebrtc==0.6.0
 notebook==6.4.12
 pyaudio==0.2.12
+pydub==0.25.1
+tqdm==4.64.1

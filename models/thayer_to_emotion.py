@@ -65,6 +65,7 @@ def thayer_coordinates_to_emotion(thayer_x: float, thayer_y: float, allow_out_of
     Calculate the emotions' values based on the thayer value
     :param thayer_x: The x value (Valance)
     :param thayer_y: The y value (Arousal)
+    :param allow_out_of_box: If False, points outside of an emotion's box will be considered 0.0
     :return: A mapping between emotion and its level in the range [0, 1]
     """
     results: Dict[AimpathyEmotion, float] = dict()
