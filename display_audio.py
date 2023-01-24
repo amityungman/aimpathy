@@ -1,5 +1,6 @@
 from aimpathy_constants import *
 from models.thayer_naive_detector import ThayerNaive
+from models.thayer_detector import ThayerRandom
 from audio_utils import smooth
 from typing import List, Dict
 import pyaudio
@@ -70,7 +71,7 @@ spectro_heatmap = ax_spectro.pcolormesh(spectro_x, spectro_y, spectro_z, cmap='m
                                         vmax=spectro_z_max)
 
 """***   THAYER MODEL   ***"""
-emotion_detector = ThayerNaive()
+emotion_detector = ThayerRandom()
 ax_thayer.set_title('Thayer model')
 ax_thayer.set_xlabel('Arousal')
 ax_thayer.set_ylabel('Valance')
@@ -91,7 +92,7 @@ emotions_graph_x_lim = 10
 ax_emotion.set_title('Perceived emotion graph')
 ax_emotion.set_xlabel('Time [sec]')
 ax_emotion.set_ylabel('Emotion level [%]')
-ax_emotion.set_ylim(0, 1)
+ax_emotion.set_ylim(0, 100)
 ax_emotion.set_xlim(0, emotions_graph_x_lim)
 
 for emotion in emotions.keys():
@@ -127,7 +128,7 @@ while True:
     for emotion, emotion_value in new_emotion.items():
         emotions[emotion].append(emotion_value)
         emotions_graphs[emotion].set_xdata([i*SECS_PER_SPECTROGRAM_SEGMENT for i in range(len(emotions[emotion]))])
-        emotions_graphs[emotion].set_ydata(emotions[emotion])
+        emotions_graphs[emotion].set_ydata([e*100.0 for e in emotions[emotion]])
     if (len(list(emotions.values())[0]) * SECS_PER_SPECTROGRAM_SEGMENT) >= emotions_graph_x_lim:
         emotions_graph_x_lim += 10
         ax_emotion.set_xlim(0, emotions_graph_x_lim)
