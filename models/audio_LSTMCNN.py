@@ -54,7 +54,7 @@ class AudioLSTMCNN(nn.Module):
         self.dropout7 = nn.Dropout(p=0.5)
 
         self.fc8 = nn.Linear(in_features=cnn_channels * 4, out_features=2)
-        self.final = nn.Identity()
+        self.final = nn.ReLU()
 
     def forward(self, x):
         x = x.reshape((1, 1, x.shape[0], -1))
