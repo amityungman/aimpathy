@@ -4,9 +4,9 @@ from torch import nn
 
 
 class AudioLSTMCNN(nn.Module):
-    def __init__(self, input_shape: Tuple[int, int], out_size: int = 2, cnn_channels: int = 64):
+    def __init__(self, out_size: int = 2, cnn_channels: int = 64):
         """
-        :param input_shape: (X, Y). For a spectogram with 128 buckets and chunk size of 196, will be (128, 196)
+        For a spectrograms with 128 buckets and chunk size of 196, will be (128, 196)
         """
         # call the parent constructor
         super(AudioLSTMCNN, self).__init__()
@@ -53,8 +53,8 @@ class AudioLSTMCNN(nn.Module):
         self.fc7 = nn.Linear(in_features=cnn_channels * 4, out_features=cnn_channels * 4)
         self.dropout7 = nn.Dropout(p=0.5)
 
-        self.fc8 = nn.Linear(in_features=cnn_channels * 4, out_features=2)
-        self.final = nn.ReLU()
+        self.fc8 = nn.Linear(in_features=cnn_channels * 4, out_features=out_size)
+        self.final = nn.Identity()
 
     def forward(self, x):
         x = x.reshape((1, 1, x.shape[0], -1))
@@ -99,6 +99,5 @@ class AudioLSTMCNN(nn.Module):
         x = self.fc8(x)
 
         final_x = self.final(x.reshape((-1)))
-        # final_x = final_x*2 - 1
 
         return final_x
