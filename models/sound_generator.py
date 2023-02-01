@@ -81,6 +81,15 @@ chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromat
 chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_scale_down.wav"]))
 
 
+chromatic_scale_up = AudioData()
+chromatic_scale_down = AudioData()
+for i in range(100):
+    chromatic_scale_up.add_sound([40+i//2], i, 1, 100)
+    chromatic_scale_down.add_sound([110-i//2], i, 1, 100)
+chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_double_scale_up.wav"]))
+chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_double_scale_down.wav"]))
+
+
 one_tone_A = AudioData()
 one_tone_A.add_sound([69], 0, 50, 100)
 one_tone_A.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_A.wav"]))
