@@ -85,3 +85,8 @@ one_tone_A = AudioData()
 one_tone_A.add_sound([69], 0, 50, 100)
 one_tone_A.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_A.wav"]))
 
+one_tone_C = AudioData()
+one_tone_C.add_sound([60], 0, 50, 100)
+one_tone_C.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_C.wav"]))
+
+
