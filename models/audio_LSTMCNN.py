@@ -144,7 +144,7 @@ class AudioLSTMCNN2(nn.Module):
         self.maxpool5 = nn.MaxPool2d(kernel_size=(3, 3), stride=(3, 3))
         self.dropout5 = nn.Dropout(p=0.25)
 
-        self.lstm6 = nn.LSTM(cnn_channels * 4, cnn_channels * 4, batch_first=True)
+        self.lstm6 = nn.LSTM(cnn_channels * 4, cnn_channels * 4)  # , batch_first=True)
         self.hidden = (torch.zeros(1, 1, cnn_channels * 4),
                        torch.zeros(1, 1, cnn_channels * 4))
         self.fc6 = nn.Linear(in_features=cnn_channels * 4, out_features=cnn_channels * 2)
@@ -155,7 +155,7 @@ class AudioLSTMCNN2(nn.Module):
 
         self.fc8 = nn.Linear(in_features=cnn_channels, out_features=cnn_channels//2)
         self.fc9 = nn.Linear(in_features=cnn_channels//2, out_features=cnn_channels//4)
-        self.fc10 = nn.Linear(in_features=cnn_channels, out_features=out_size)
+        self.fc10 = nn.Linear(in_features=cnn_channels//4, out_features=out_size)
         self.final = nn.Identity()
 
     def forward(self, x):
@@ -192,6 +192,8 @@ class AudioLSTMCNN2(nn.Module):
         x = x.permute(0, 2, 1)
 
         x, self.hidden = self.lstm6(x, self.hidden)
+
+        x = x.view(x.size(0), -1)
         x = self.fc6(x)
         x = self.dropout6(x)
 
