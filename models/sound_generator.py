@@ -127,20 +127,50 @@ class AudioData(object):
 # one_tone_C_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_C_120_bpm.wav"]))
 
 
-Harmony_A_C_one_tone = AudioData()
-Harmony_A_C_120_bpm = AudioData()
-Harmony_A_Cs_one_tone = AudioData()
-Harmony_A_Cs_120_bpm = AudioData()
-Harmony_A_C_one_tone.add_sound([69, 72], 0, 50, 100)
-Harmony_A_Cs_one_tone.add_sound([69, 73], 0, 50, 100)
-for i in range(2*25):
-    Harmony_A_C_120_bpm.add_sound([69, 72], i, 1, 100 if (i % 2 == 0) else 0)
-    Harmony_A_Cs_120_bpm.add_sound([69, 73], i, 1, 100 if (i % 2 == 0) else 0)
-Harmony_A_C_one_tone.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_C_one_tone.wav"]))
-Harmony_A_C_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_C_120_bpm.wav"]))
-Harmony_A_Cs_one_tone.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_Cs_one_tone.wav"]))
-Harmony_A_Cs_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_Cs_120_bpm.wav"]))
+# Harmony_A_C_one_tone = AudioData()
+# Harmony_A_C_120_bpm = AudioData()
+# Harmony_A_Cs_one_tone = AudioData()
+# Harmony_A_Cs_120_bpm = AudioData()
+# Harmony_A_C_one_tone.add_sound([69, 72], 0, 50, 100)
+# Harmony_A_Cs_one_tone.add_sound([69, 73], 0, 50, 100)
+# for i in range(2*25):
+#     Harmony_A_C_120_bpm.add_sound([69, 72], i, 1, 100 if (i % 2 == 0) else 0)
+#     Harmony_A_Cs_120_bpm.add_sound([69, 73], i, 1, 100 if (i % 2 == 0) else 0)
+# Harmony_A_C_one_tone.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_C_one_tone.wav"]))
+# Harmony_A_C_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_C_120_bpm.wav"]))
+# Harmony_A_Cs_one_tone.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_Cs_one_tone.wav"]))
+# Harmony_A_Cs_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_Cs_120_bpm.wav"]))
 
 
+# A_increasing_bpm = AudioData(tempo=240)
+# A_decreasing_bpm = AudioData(tempo=240)
+# bpm_dividers = [i for i in range(1, 10) if 240 % i == 0]
+# progress_seek = 0
+# for i in bpm_dividers:
+#     for j in range((240//60)*(8//i)):
+#         A_decreasing_bpm.add_sound([69], progress_seek, i, 100)
+#         progress_seek += i
+# progress_seek = 0
+# bpm_dividers.reverse()
+# for i in bpm_dividers:
+#     for j in range((240//60)*(8//i)):
+#         A_increasing_bpm.add_sound([69], progress_seek, i, 100)
+#         progress_seek += i
+# A_increasing_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "A_increasing_bpm.wav"]))
+# A_decreasing_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "A_decreasing_bpm.wav"]))
 
 
+volume_increase_fade = AudioData()
+volume_decrease_fade = AudioData()
+volume_increase_sharp = AudioData()
+volume_decrease_sharp = AudioData()
+for i in range(50):
+    volume_increase_fade.add_sound([69], i*4, 4, 0 + (2*i))
+    volume_decrease_fade.add_sound([69], i*4, 4, 100 - (2*i))
+volume_increase_fade.save_to_wav(os.sep.join(["..", "data", "test_audio", "volume_increase_fade.wav"]))
+volume_decrease_fade.save_to_wav(os.sep.join(["..", "data", "test_audio", "volume_decrease_fade.wav"]))
+for i in range(5):
+    volume_increase_sharp.add_sound([69], i*8, 8, 0 + (20*i))
+    volume_decrease_sharp.add_sound([69], i*8, 8, 100 - (20*i))
+volume_increase_sharp.save_to_wav(os.sep.join(["..", "data", "test_audio", "volume_increase_sharp.wav"]))
+volume_decrease_sharp.save_to_wav(os.sep.join(["..", "data", "test_audio", "volume_decrease_sharp.wav"]))
