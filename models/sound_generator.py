@@ -72,49 +72,75 @@ class AudioData(object):
 
 ###    SCRIPT
 
-chromatic_scale_up = AudioData()
-chromatic_scale_down = AudioData()
-for i in range(50):
-    chromatic_scale_up.add_sound([40+i], i, 1, 100)
-    chromatic_scale_down.add_sound([110-i], i, 1, 100)
-chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_scale_up.wav"]))
-chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_scale_down.wav"]))
+# chromatic_scale_up = AudioData()
+# chromatic_scale_down = AudioData()
+# for i in range(50):
+#     chromatic_scale_up.add_sound([50+i], i, 1, 100)
+#     chromatic_scale_down.add_sound([100-i], i, 1, 100)
+# chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_scale_up.wav"]))
+# chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_scale_down.wav"]))
+#
+#
+# chromatic_scale_up = AudioData()
+# chromatic_scale_down = AudioData()
+# for i in range(100):
+#     chromatic_scale_up.add_sound([50+i//2], i, 1, 100)
+#     chromatic_scale_down.add_sound([100-i//2], i, 1, 100)
+# chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_double_scale_up.wav"]))
+# chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_double_scale_down.wav"]))
+#
+#
+# chromatic_scale_up = AudioData()
+# chromatic_scale_down = AudioData()
+# for i in range(4*50):
+#     chromatic_scale_up.add_sound([50+i//4], i, 1, 100)
+#     chromatic_scale_down.add_sound([100-i//4], i, 1, 100)
+# chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_4_scale_up.wav"]))
+# chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_4_scale_down.wav"]))
+#
 
 
-chromatic_scale_up = AudioData()
-chromatic_scale_down = AudioData()
-for i in range(100):
-    chromatic_scale_up.add_sound([40+i//2], i, 1, 100)
-    chromatic_scale_down.add_sound([110-i//2], i, 1, 100)
-chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_double_scale_up.wav"]))
-chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_double_scale_down.wav"]))
+# one_tone_A = AudioData()
+# one_tone_A.add_sound([69], 0, 50, 100)
+# one_tone_A.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_A.wav"]))
+#
+# one_tone_C = AudioData()
+# one_tone_C.add_sound([60], 0, 50, 100)
+# one_tone_C.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_C.wav"]))
+#
+#
+# chromatic_scale_up = AudioData()
+# chromatic_scale_down = AudioData()
+# for i in range(8*50):
+#     chromatic_scale_up.add_sound([40+i//8], i, 1, 100)
+#     chromatic_scale_down.add_sound([90-i//8], i, 1, 100)
+# chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_8_scale_up.wav"]))
+# chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_8_scale_down.wav"]))
 
 
-chromatic_scale_up = AudioData()
-chromatic_scale_down = AudioData()
-for i in range(4*50):
-    chromatic_scale_up.add_sound([40+i//4], i, 1, 100)
-    chromatic_scale_down.add_sound([110-i//4], i, 1, 100)
-chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_4_scale_up.wav"]))
-chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_4_scale_down.wav"]))
+# one_tone_A_120_bpm = AudioData()
+# one_tone_C_120_bpm = AudioData()
+# for i in range(2*25):
+#     one_tone_A_120_bpm.add_sound([69], i, 1, 100 if (i % 2 == 0) else 0)
+#     one_tone_C_120_bpm.add_sound([60], i, 1, 100 if (i % 2 == 0) else 0)
+# one_tone_A_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_A_120_bpm.wav"]))
+# one_tone_C_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_C_120_bpm.wav"]))
 
 
-chromatic_scale_up = AudioData()
-chromatic_scale_down = AudioData()
-for i in range(8*50):
-    chromatic_scale_up.add_sound([40+i//8], i, 1, 100)
-    chromatic_scale_down.add_sound([110-i//8], i, 1, 100)
-chromatic_scale_up.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_8_scale_up.wav"]))
-chromatic_scale_down.save_to_wav(os.sep.join(["..", "data", "test_audio", "chromatic_8_scale_down.wav"]))
+Harmony_A_C_one_tone = AudioData()
+Harmony_A_C_120_bpm = AudioData()
+Harmony_A_Cs_one_tone = AudioData()
+Harmony_A_Cs_120_bpm = AudioData()
+Harmony_A_C_one_tone.add_sound([69, 72], 0, 50, 100)
+Harmony_A_Cs_one_tone.add_sound([69, 73], 0, 50, 100)
+for i in range(2*25):
+    Harmony_A_C_120_bpm.add_sound([69, 72], i, 1, 100 if (i % 2 == 0) else 0)
+    Harmony_A_Cs_120_bpm.add_sound([69, 73], i, 1, 100 if (i % 2 == 0) else 0)
+Harmony_A_C_one_tone.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_C_one_tone.wav"]))
+Harmony_A_C_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_C_120_bpm.wav"]))
+Harmony_A_Cs_one_tone.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_Cs_one_tone.wav"]))
+Harmony_A_Cs_120_bpm.save_to_wav(os.sep.join(["..", "data", "test_audio", "Harmony_A_Cs_120_bpm.wav"]))
 
 
-
-one_tone_A = AudioData()
-one_tone_A.add_sound([69], 0, 50, 100)
-one_tone_A.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_A.wav"]))
-
-one_tone_C = AudioData()
-one_tone_C.add_sound([60], 0, 50, 100)
-one_tone_C.save_to_wav(os.sep.join(["..", "data", "test_audio", "one_tone_C.wav"]))
 
 
