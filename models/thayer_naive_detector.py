@@ -9,13 +9,15 @@ class ThayerNaive(ThayerModel):
     _pitch_range: Tuple[float, float, float]
     _volume_range: Tuple[float, float]
     _spectrogram = np.linspace(0, RATE // 2, FFT_POINTS_UNSIGNED + 1)
-    _last_value: Tuple[float, float] = (0.0, 0.0)
+    _last_values: List[Tuple[float, float]] = list()
+    _smooth_factor: int
 
     def __init__(self, min_pitch: float = 87.30706, mid_pitch: float = 220, max_pitch: float = 1760.0,
-                 min_volume: float = 100, max_volume: float = 10**6, volume_log_root: float = 2):
+                 min_volume: float = 100, max_volume: float = 10**6, volume_log_root: float = 2, smooth_factor: int = 10):
         self._pitch_range = min_pitch, mid_pitch, max_pitch
         self._volume_range = min_volume, max_volume
         self.AROUSAL_LOG_ROOT = volume_log_root
+        self._smooth_factor = smooth_factor
 
     def get_valance(self, pitch: float) -> float:
         pmin, pmid, pmax = self._pitch_range
@@ -43,5 +45,7 @@ class ThayerNaive(ThayerModel):
         arousal = self.get_arousal(max_volume)
         print(f"pitch: {pitch} | valance: {valance} | volume: {max(spectrogram)} | arousal: {arousal}")
 
-        self._last_value = mean([valance, self._last_value[1]]), mean([arousal, self._last_value[0]])
-        return self._last_value
+        if len(self._last_values) >= self._smooth_factor:
+            self._last_values = self._last_values[1:]
+        self._last_values.append((valance, arousal))
+        return mean([val for val, aro in self._last_values]), mean([aro for val, aro in self._last_values])

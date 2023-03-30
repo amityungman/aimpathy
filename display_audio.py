@@ -71,7 +71,7 @@ spectro_heatmap = ax_spectro.pcolormesh(spectro_x, spectro_y, spectro_z, cmap='m
                                         vmax=spectro_z_max)
 
 """***   THAYER MODEL   ***"""
-emotion_detector = ThayerRandom()
+emotion_detector = ThayerNaive()
 ax_thayer.set_title('Thayer model')
 ax_thayer.set_xlabel('Arousal')
 ax_thayer.set_ylabel('Valance')
@@ -103,6 +103,7 @@ ax_emotion.legend()
 
 print("Display ready")
 plt.show(block=False)
+first_time = False
 
 while True:
     # binary data
@@ -137,6 +138,9 @@ while True:
         fig.canvas.draw()
         fig.canvas.flush_events()
         time.sleep(REFRESH_RATE)
+        if first_time:
+            time.sleep(20)
+            first_time = False
 
     except:
         print('stream stopped')
